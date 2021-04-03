@@ -31,7 +31,9 @@ endif()
 set(CMAKE_MACOSX_RPATH ON)
 
 # Set resource directory
-set(DATSETS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Datasets")
+set(DATASETS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Datasets")
 
 # Project modules
 add_subdirectory(Sources)
+add_subdirectory(Examples/00-regression)
+add_subdirectory(Tests/UnitTests)
