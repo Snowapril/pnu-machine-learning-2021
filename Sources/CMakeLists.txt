@@ -1,21 +1,12 @@
 # Target name
-set(target pnu-machine-learning-2021)
+set(target PNU-ML)
 
 # Define root directory
-set(root_dir ${CMAKE_CURRENT_SOURCE_DIR}/..)
+set(root_dir ${CMAKE_CURRENT_SOURCE_DIR}/../..)
 
 # Includes
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
-)
-
-# Sources
-file(GLOB header_dir
-    ${root_dir}/Includes
-)
-
-file(GLOB_RECURSE headers
-    ${header_dir}/*.hpp
 )
 
 file(GLOB_RECURSE sources
@@ -30,7 +21,7 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
 endif ()
 
 # Build executable
-add_executable(${target}
+add_library(${target}
     ${sources})
 
 # Project options
@@ -50,12 +41,6 @@ target_compile_options(${target}
     INTERFACE
 )
 
-# Compile definitions
-target_compile_definitions(${target}
-    PRIVATE
-    DATSETS_DIR="${DATSETS_DIR}"
-)
-
 target_link_libraries(${target}
     PRIVATE
 
@@ -64,3 +49,7 @@ target_link_libraries(${target}
 	${DEFAULT_LIBRARIES}
     INTERFACE
 )
+
+# Install
+install(TARGETS ${target} DESTINATION lib)
+install(DIRECTORY ${header_dir} DESTINATION include)
