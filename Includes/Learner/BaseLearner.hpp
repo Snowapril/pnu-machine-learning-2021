@@ -7,7 +7,7 @@
 #ifndef BASE_LEARNER_HPP
 #define BASE_LEARNER_HPP
 
-#include <Data/BaseData.hpp>
+#include <Data/StructuredData.hpp>
 #include <Generator/BaseGenerator.hpp>
 #include <vector>
 
@@ -21,13 +21,14 @@ namespace Learner
 		//! Default destructor
 		virtual ~BaseLearner() = default;
 		//! Train the learner with one data
-		void Train(const Data::BaseData& data);
+		void Train(const Data::StructuredDataF32& data);
 		//! Predict the target with one data.
-		void Predict(const Data::BaseData& data, Data::BaseData& prediction);
+		void Predict(const Data::StructuredDataF32& data, Data::StructuredDataF32* prediction);
 		//! Train the learner with the given batch dataset
-		void TrainOnBatch(const Generator::BaseGenerator& batchData);
+		void TrainOnBatch(const Generator::BaseGenerator<Data::StructuredDataF32>& batchData);
 		//! Predict the given batch dataset. In this case, there is no modification in parameters of the learner.
-		void PredictOnBatch(const Generator::BaseGenerator& batchData, std::vector< Data::BaseData >& predictions);
+		void PredictOnBatch(const Generator::BaseGenerator<Data::StructuredDataF32>& batchData, 
+							std::vector< Data::StructuredDataF32 >* predictions);
 	protected:
 	private:
 	};
