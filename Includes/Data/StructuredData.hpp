@@ -11,7 +11,8 @@
 
 namespace Data
 {
-	class StructuredData : public BaseData
+	template <typename Type>
+	class StructuredData final : public BaseData<Type>
 	{
 	public:
 		//! Default constructor
@@ -21,6 +22,11 @@ namespace Data
 	protected:
 	private:
 	};
+
+	using StructuredDataI32 = StructuredData<int>;
+	using StructuredDataF32 = StructuredData<float>;
+	using StructuredDataF64 = StructuredData<double>;
 };
 
+#include <Data/StructuredData-Impl.hpp>
 #endif //! end of StructuredData.hpp

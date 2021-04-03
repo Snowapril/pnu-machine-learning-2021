@@ -11,7 +11,8 @@
 
 namespace Generator
 {
-	class MiniBatchGenerator : public BaseGenerator
+	template <typename DataType = Data::StructuredDataF32>
+	class MiniBatchGenerator : public BaseGenerator<DataType>
 	{
 	public:
 		//! Default constructor
@@ -23,5 +24,5 @@ namespace Generator
 	};
 };
 
-
+#include <Generator/MiniBatchGenerator-Impl.hpp>
 #endif //! end of MiniBatchGenerator.hpp

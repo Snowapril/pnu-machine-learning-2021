@@ -11,7 +11,8 @@
 
 namespace Generator
 {
-	class CrossFoldGenerator : public BaseGenerator
+	template <typename DataType = Data::StructuredDataF32>
+	class CrossFoldGenerator : public BaseGenerator<DataType>
 	{
 	public:
 		//! Default constructor
@@ -23,4 +24,5 @@ namespace Generator
 	};
 };
 
+#include <Generator/CrossFoldGenerator-Impl.hpp>
 #endif //! end of CrossFoldGenerator.hpp

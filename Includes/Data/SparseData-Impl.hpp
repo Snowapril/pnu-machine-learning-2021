@@ -4,9 +4,7 @@
 // personal capacity and are not conveying any rights to any intellectual
 // property of any third parties.
 
-#include <Generator/BaseGenerator.hpp>
-
-namespace Generator
+namespace Data
 {
 
 };

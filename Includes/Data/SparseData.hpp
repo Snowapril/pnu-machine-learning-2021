@@ -11,7 +11,8 @@
 
 namespace Data
 {
-	class SparseData : public BaseData
+	template <typename Type>
+	class SparseData final : public BaseData<Type>
 	{
 	public:
 		//! Default constructor
@@ -21,6 +22,11 @@ namespace Data
 	protected:
 	private:
 	};
+
+	using SparseDataI32 = SparseData<int>;
+	using SparseDataF32 = SparseData<float>;
+	using SparseDataF64 = SparseData<double>;
 };
 
+#include <Data/SparseData-Impl.hpp>
 #endif //! end of SparseData.hpp
