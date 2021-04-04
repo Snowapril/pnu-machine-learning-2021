@@ -12,8 +12,9 @@ namespace Utils
 {
 	bool DataLoader::LoadFile(const std::string& filename, std::vector<char>* contents, bool binaryFlag)
 	{
-		std::ios_base::openmode bflag = binaryFlag ? std::ios::binary : 0;
-		std::ifstream file(filename, std::ios::in | std::ios::ate | bflag);
+		std::ios::openmode openmode = binaryFlag ? std::ios::in | std::ios::ate | std::ios::binary :
+												   std::ios::in | std::ios::ate;
+		std::ifstream file(filename, openmode);
 
 		if (file.is_open() == false)
 		{
