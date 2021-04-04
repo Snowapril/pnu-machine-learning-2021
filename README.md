@@ -4,6 +4,8 @@
 
 [![CodeFactor](https://www.codefactor.io/repository/github/snowapril/pnu-machine-learning-2021/badge)](https://www.codefactor.io/repository/github/snowapril/pnu-machine-learning-2021)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/fac156dacdeb41b7809e3a40245de656)](https://www.codacy.com/gh/Snowapril/pnu-machine-learning-2021/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Snowapril/pnu-machine-learning-2021&amp;utm_campaign=Badge_Grade)
+[![Ubuntu github action](https://github.com/Snowapril/pnu-machine-learning-2021/actions/workflows/ubuntu.yml/badge.svg?branch=main)]
+[![Window github action](https://github.com/Snowapril/pnu-machine-learning-2021/actions/workflows/window.yml/badge.svg?branch=main)]
 
 This is project for implementing on my own experimental machine learning algorithms and comparing performance of them.
 
