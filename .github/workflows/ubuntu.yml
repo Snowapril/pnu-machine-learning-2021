@@ -44,7 +44,18 @@ jobs:
           echo "CC=clang-${{ matrix.version }}" >> $GITHUB_ENV
           echo "CXX=clang++-${{ matrix.version }}" >> $GITHUB_ENV
         fi
+    - name: Install Dependencies
+      run: |
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo apt-get update
+        if [ "${{ matrix.compiler }}" = "gcc" ]; then
+          sudo apt-get install cmake gcc-${{ matrix.version }} g++-${{ matrix.version }}
+        else
+          sudo apt-get install cmake clang-${{ matrix.version }} clang++-${{ matrix.version }}
+        fi
     - name: Configure Build
       run: mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release
     - name: Build
       run: cd build && make
+    - name: Run Unit-Test
+      run: /home/runner/work/pnu-machine-learning-2021/pnu-machine-learning-2021/build/bin/UnitTests
