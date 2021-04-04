@@ -8,6 +8,7 @@
 #include <sstream>
 #include <iterator>
 #include <algorithm>
+#include <iostream>
 
 namespace Generator
 {

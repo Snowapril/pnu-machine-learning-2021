@@ -40,9 +40,13 @@ jobs:
         if [ "${{ matrix.compiler }}" = "gcc" ]; then
           echo "CC=gcc-${{ matrix.version }}" >> $GITHUB_ENV
           echo "CXX=g++-${{ matrix.version }}" >> $GITHUB_ENV
+          echo "CMAKE_C_COMPILER=gcc-${{ matrix.version }}" >> $GITHUB_ENV
+          echo "CMAKE_CXX_COMPILER=g++-${{ matrix.version }}" >> $GITHUB_ENV
         else
           echo "CC=clang-${{ matrix.version }}" >> $GITHUB_ENV
           echo "CXX=clang++-${{ matrix.version }}" >> $GITHUB_ENV
+          echo "CMAKE_C_COMPILER=gcc-${{ matrix.version }}" >> $GITHUB_ENV
+          echo "CMAKE_CXX_COMPILER=g++-${{ matrix.version }}" >> $GITHUB_ENV
         fi
     - name: Configure Build
       run: mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release
