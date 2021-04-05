@@ -171,7 +171,7 @@ namespace Data
 		for (size_t i = 0; i < resultMat._numRow; ++i)
 		for (size_t j = 0; j < resultMat._numCol; ++j)
 		{
-			DataType::AttributeType sum{ 0 };
+			typename DataType::AttributeType sum{ 0 };
 			for (size_t k = 0; k < _numCol; ++k)
 				sum += _elements[i][k] * matrix[k][j];
 			resultMat[i][j] = sum;
@@ -255,24 +255,24 @@ namespace Data
 	template <typename DataType>
 	typename Matrix<DataType>::Iterator Matrix<DataType>::begin()
 	{
-		return _datasets.begin();
+		return _elements.begin();
 	}
 
 	template <typename DataType>
 	typename Matrix<DataType>::Iterator Matrix<DataType>::end()
 	{
-		return _datasets.end();
+		return _elements.end();
 	}
 
 	template <typename DataType>
 	typename Matrix<DataType>::ConstIterator Matrix<DataType>::cbegin() const
 	{
-		return _datasets.cbegin();
+		return _elements.cbegin();
 	}
 
 	template <typename DataType>
 	typename Matrix<DataType>::ConstIterator Matrix<DataType>::cend() const
 	{
-		return _datasets.cend();
+		return _elements.cend();
 	}
 };
