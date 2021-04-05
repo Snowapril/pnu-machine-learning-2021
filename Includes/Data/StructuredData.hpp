@@ -21,6 +21,23 @@ namespace Data
 		using ConstIterator = typename ContainerType::const_iterator;
 		//! Default constructor
 		StructuredData() = default;
+		//! Generate the base data with give number of attributes
+		StructuredData(size_t num, AttributeType initialValue = 0);
+		//!
+		//! \brief constructs a base data with initializer list \p list
+		//! 
+		//! This constructpr will build a base data with given initializer list \p list
+		//! such as
+		//! 
+		//! \code{.cpp}
+		//! BaseData<float> mat = {1.0f, 2.0f, 3.0f, 4.0f};
+		//! \endcode
+		//! 
+		//! \param list - initializer list that should be copy to the new base data.
+		//! 
+		StructuredData(const std::initializer_list<AttributeType>&list);
+		//! Initialize _attributes with given vector values.
+		StructuredData(const std::vector<AttributeType>& values);
 		//! Default destructor
 		~StructuredData() = default;
 	protected:

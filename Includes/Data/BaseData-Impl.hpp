@@ -11,11 +11,17 @@ namespace Data
 	{
 		Resize(num, initialValue);
 	}
-
+	
 	template <typename Type>
 	BaseData<Type>::BaseData(const std::initializer_list<AttributeType>& list)
 	{
 		Set(list);
+	}
+
+	template <typename Type>
+	BaseData<Type>::BaseData(const std::vector<AttributeType>& values)
+	{
+		Set(values);
 	}
 
 	template <typename Type>
@@ -52,6 +58,12 @@ namespace Data
 	void BaseData<Type>::Set(const std::initializer_list<AttributeType>& list)
 	{
 		_attributes.assign(list);
+	}
+
+	template <typename Type>
+	void BaseData<Type>::Set(const std::vector<AttributeType>& values)
+	{
+		_attributes.assign(values.begin(), values.end());
 	}
 
 	template <typename Type>

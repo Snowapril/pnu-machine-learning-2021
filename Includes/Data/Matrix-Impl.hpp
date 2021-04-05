@@ -21,6 +21,12 @@ namespace Data
 	}
 
 	template <typename DataType>
+	Matrix<DataType>::Matrix(const std::vector<DataType>& values)
+	{
+		Set(values);
+	}
+
+	template <typename DataType>
 	void Matrix<DataType>::Resize(size_t M, size_t N, typename DataType::AttributeType initialValue)
 	{
 		_numCol = M; _numRow = N;
@@ -35,6 +41,15 @@ namespace Data
 		assert(list.size() > 0);
 		_elements.assign(list);
 		_numRow = _elements.size(); 
+		_numCol = _elements.front().Size();
+	}
+
+	template <typename DataType>
+	void Matrix<DataType>::Set(const std::vector<DataType>& values)
+	{
+		assert(list.size() > 0);
+		_elements.assign(values.begin(), values.end());
+		_numRow = _elements.size();
 		_numCol = _elements.front().Size();
 	}
 

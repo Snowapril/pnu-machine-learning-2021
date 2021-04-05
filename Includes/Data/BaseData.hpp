@@ -39,6 +39,8 @@ namespace Data
 		//! \param list - initializer list that should be copy to the new base data.
 		//! 
 		BaseData(const std::initializer_list<AttributeType>& list);
+		//! Initialize _attributes with given vector values.
+		BaseData(const std::vector<AttributeType>& values);
 		//! Default destructor
 		virtual ~BaseData() = default;
 		//! Returns reference of i-th element
@@ -64,6 +66,8 @@ namespace Data
 		//! \param list - initializer list that should be copy to the new base data.
 		//! 
 		void Set(const std::initializer_list<AttributeType>& list);
+		//! Initialize _attributes with given vector values.
+		void Set(const std::vector<AttributeType>& values);
 		//! Returns new data row + input scalar
 		const BaseData<Type> operator+(const AttributeType& scalar);
 		//! Returns new data row - input scalar

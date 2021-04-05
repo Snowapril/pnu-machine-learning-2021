@@ -49,6 +49,8 @@ namespace Data
 		//! \param list - initializer list that should be copy to the new matrix.
 		//! 
 		Matrix(const std::initializer_list<DataType>& list);
+		//! Initialize _attributes with given vector values.
+		Matrix(const std::vector<DataType>& values);
 		//! Default destructor
 		~Matrix() = default;
 		//! Set the matrix with the new column length and row length.
@@ -70,6 +72,8 @@ namespace Data
 		//! \param list - initializer list that should be copy to the new matrix.
 		//! 
 		void Set(const std::initializer_list<DataType>& list);
+		//! Initialize _attributes with given vector values.
+		void Set(const std::vector<DataType>& values);
 		//! Set elements of the i-th row
 		void SetRow(const DataType& data, size_t i);
 		//! Set element of the i-th column
