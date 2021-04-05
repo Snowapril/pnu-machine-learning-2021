@@ -15,6 +15,10 @@ namespace Data
 	class StructuredData final : public BaseData<Type>
 	{
 	public:
+		using AttributeType = typename Type;
+		using ContainerType = std::vector<AttributeType>;
+		using Iterator = typename ContainerType::iterator;
+		using ConstIterator = typename ContainerType::const_iterator;
 		//! Default constructor
 		StructuredData() = default;
 		//! Default destructor
