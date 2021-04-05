@@ -15,7 +15,7 @@ namespace Data
 	class SparseData final : public BaseData<Type>
 	{
 	public:
-		using AttributeType = typename Type;
+		using AttributeType = Type;
 		using ContainerType = std::vector<AttributeType>;
 		using Iterator = typename ContainerType::iterator;
 		using ConstIterator = typename ContainerType::const_iterator;
