@@ -16,7 +16,11 @@ namespace Generator
 	bool BaseGenerator<DataType>::LoadDataSet(const std::string& filename, bool exceptHeader)
 	{
 		std::vector<char> contents;
-		Utils::DataLoader::LoadFile(filename, &contents);
+		if (!Utils::DataLoader::LoadFile(filename, &contents))
+		{
+			std::cerr << "Failed to open " << filename << std::endl;
+			return false;
+		}
 
 		const std::string& extension = filename.substr(filename.find_last_of('.'));
 		if (extension == ".csv")
@@ -33,11 +37,28 @@ namespace Generator
 	template <typename DataType>
 	bool BaseGenerator<DataType>::ParseCSVData(const std::vector<char>& contents, bool exceptHeader)
 	{
-		std::ostringstream osstr;
-		std::copy(contents.begin(), contents.end(), std::ostream_iterator<char>(osstr));
-		//! TODO(snowapril) : implement parsing csv data.
-		(void)osstr;
-		(void)exceptHeader;
+		std::istringstream isstr(std::string(contents.begin(), contents.end()));
+		
+		std::string temp;
+		if (!exceptHeader)
+		{
+			std::getline(isstr, temp);
+			std::istringstream headerParser(temp);
+			std::string header;
+			while (std::getline(headerParser, header, ','))
+				_headers.push_back(header);
+		}
+
+		while (std::getline(isstr, temp))
+		{
+			std::vector<typename DataType::AttributeType> data;
+			std::istringstream valueParser(temp);
+			std::string value;
+			while (std::getline(valueParser, value, ','))
+				data.push_back(static_cast<typename DataType::AttributeType>(std::stod(value)));
+			_datasets.push_back(DataType(data));
+		}
+
 		return true;
 	}
 
