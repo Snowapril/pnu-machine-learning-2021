@@ -7,42 +7,37 @@
 #ifndef BASE_GENERATOR_HPP
 #define BASE_GENERATOR_HPP
 
-#include <Data/StructuredData.hpp>
+#include <Math/Matrix.hpp>
 #include <string>
 #include <vector>
 
 namespace Generator
 {
-	template <typename DataType = Data::StructuredDataF32>
 	class BaseGenerator
 	{
 	public:
-		using HeaderType = std::vector<std::string>;
+		using DataType = Math::FMatrix;
 		using ContainerType = std::vector<DataType>;
 		using Iterator = typename ContainerType::iterator;
 		using ConstIterator = typename ContainerType::const_iterator;
+		using BatchType = std::pair<ConstIterator, ConstIterator>;
 		//! Default constructor
 		BaseGenerator() = default;
+		//! Constructure with dataset informations
+		BaseGenerator(const std::string& filename, const std::initializer_list<size_t>& targetIndices, bool exceptHeader = true);
 		//! Default destructor
 		virtual ~BaseGenerator() = default;
 		//! Load the generator from the dataset file.
-		bool LoadDataSet(const std::string& filename, bool exceptHeader = true);
-		//! Return iterator of the begin point.
-		Iterator begin();
-		//! Return iteartor of the end point
-		Iterator end();
-		//! Return const iterator of the begin point
-		ConstIterator cbegin() const;
-		//! Return const iterator of the begin point
-		ConstIterator cend() const;
+		bool LoadDataSet(const std::string& filename, const std::initializer_list<size_t>& targetIndices, bool exceptHeader = true);
+		//! Generate begin, end point pair of the input dataset vector in one epoch
+		virtual BatchType GetInputBatch(size_t epochIdx);
+		//! Generate begin, end point pair of the label dataset vector in one epoch
+		virtual BatchType GetLabelBatch(size_t epochIdx);
 	protected:
-		HeaderType _headers;
-		ContainerType _datasets;
+		ContainerType _inputs;
+		ContainerType _labels;
 	private:
-		//! interpret the contents as CSV format and parse the data.
-		bool ParseCSVData(const std::vector<char>& contents, bool exceptHeader);
 	};
 };
 
-#include <Generator/BaseGenerator-Impl.hpp>
 #endif //! end of BaseGenerator.hpp

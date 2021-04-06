@@ -11,18 +11,23 @@
 
 namespace Generator
 {
-	template <typename DataType = Data::StructuredDataF32>
-	class MiniBatchGenerator : public BaseGenerator<DataType>
+	class MiniBatchGenerator : public BaseGenerator
 	{
 	public:
 		//! Default constructor
 		MiniBatchGenerator() = default;
 		//! Default destructor
 		~MiniBatchGenerator() = default;
+		//! Set the number of batch in this generator.
+		void SetBatchCount(size_t batchCount);
+		//! Generate begin, end point pair of the input dataset vector in one epoch
+		BatchType GetInputBatch(size_t epochIdx) override;
+		//! Generate begin, end point pair of the label dataset vector in one epoch
+		BatchType GetLabelBatch(size_t epochIdx) override;
 	protected:
 	private:
+		size_t _numBatch{ 1 };
 	};
 };
 
-#include <Generator/MiniBatchGenerator-Impl.hpp>
 #endif //! end of MiniBatchGenerator.hpp

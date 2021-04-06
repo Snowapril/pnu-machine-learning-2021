@@ -11,18 +11,20 @@
 
 namespace Generator
 {
-	template <typename DataType = Data::StructuredDataF32>
-	class CrossFoldGenerator : public BaseGenerator<DataType>
+	class CrossFoldGenerator : public BaseGenerator
 	{
 	public:
 		//! Default constructor
 		CrossFoldGenerator() = default;
 		//! Default destructor
 		~CrossFoldGenerator() = default;
+		//! Generate begin, end point pair of the input dataset vector in one epoch
+		BatchType GetInputBatch(size_t epochIdx) override;
+		//! Generate begin, end point pair of the label dataset vector in one epoch
+		BatchType GetLabelBatch(size_t epochIdx) override;
 	protected:
 	private:
 	};
 };
 
-#include <Generator/CrossFoldGenerator-Impl.hpp>
 #endif //! end of CrossFoldGenerator.hpp

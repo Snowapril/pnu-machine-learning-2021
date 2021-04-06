@@ -8,24 +8,24 @@
 
 namespace Learner
 {
-	void BaseLearner::Train(const Data::StructuredDataF32& data)
+	void BaseLearner::Train(const Math::FMatrix& data)
 	{
 		(void)data;
 	}
 
-	void BaseLearner::Predict(const Data::StructuredDataF32& data, Data::StructuredDataF32* prediction)
+	void BaseLearner::Predict(const Math::FMatrix& data, Math::FMatrix* prediction)
 	{
 		(void)data;
 		(void)prediction;
 	}
 
-	void BaseLearner::TrainOnBatch(const Generator::BaseGenerator<Data::StructuredDataF32>& batchData)
+	void BaseLearner::TrainOnBatch(const std::shared_ptr<Generator::BaseGenerator>& batchData)
 	{
 		(void)batchData;
 	}
 
-	void BaseLearner::PredictOnBatch(const Generator::BaseGenerator<Data::StructuredDataF32>& batchData,
-									 std::vector< Data::StructuredDataF32 >* predictions)
+	void BaseLearner::PredictOnBatch(const std::shared_ptr<Generator::BaseGenerator>& batchData,
+									 std::vector<Math::FMatrix>* predictions)
 	{
 		(void)batchData;
 		(void)predictions;
