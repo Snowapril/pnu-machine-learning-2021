@@ -8,5 +8,9 @@
 
 namespace Learner
 {
-	
+	//! Set learning rate handler function
+	void Regression::SetLearningRateHandler(LearningRate::LearningRateFunc<float> handler)
+	{
+		_lrHandler = handler;
+	}
 };
