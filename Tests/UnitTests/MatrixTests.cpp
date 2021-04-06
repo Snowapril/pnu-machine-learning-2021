@@ -4,7 +4,7 @@
 
 TEST_CASE("Matrix access Test")
 {
-    Data::Matrix<Data::BaseDataF32> matrix{
+    Data::Matrix<float> matrix{
         {1.0f, 2.0f, 3.0f, 4.0f},
         {3.0f, 5.0f, 7.0f, 9.0f}
     };
@@ -14,11 +14,11 @@ TEST_CASE("Matrix access Test")
 
 TEST_CASE("Matrix multiplication Test")
 {
-    Data::Matrix<Data::BaseDataF32> mat1{
+    Data::Matrix<float> mat1{
         {1.0f, 2.0f, 3.0f, 4.0f}
     };
 
-    Data::Matrix<Data::BaseDataF32> mat2{
+    Data::Matrix<float> mat2{
         {1.0f}, 
         {1.0f}, 
         {1.0f}, 
@@ -32,11 +32,11 @@ TEST_CASE("Matrix multiplication Test")
 
 TEST_CASE("Matrix addition Test")
 {
-    Data::Matrix<Data::BaseDataF32> mat1{
+    Data::Matrix<float> mat1{
         {1.0f, 2.0f, 3.0f, 4.0f}
     };
 
-    Data::Matrix<Data::BaseDataF32> mat2{
+    Data::Matrix<float> mat2{
         {1.0f, 2.0f, 3.0f, 4.0f}
     };
 
@@ -47,11 +47,11 @@ TEST_CASE("Matrix addition Test")
 
 TEST_CASE("Matrix substraction Test")
 {
-    Data::Matrix<Data::BaseDataF32> mat1{
+    Data::Matrix<float> mat1{
         {1.0f, 2.0f, 3.0f, 4.0f}
     };
 
-    Data::Matrix<Data::BaseDataF32> mat2{
+    Data::Matrix<float> mat2{
         {1.0f, 2.0f, 3.0f, 4.0f}
     };
 
@@ -62,7 +62,7 @@ TEST_CASE("Matrix substraction Test")
 
 TEST_CASE("Matrix scalar multiplication Test")
 {
-    Data::Matrix<Data::BaseDataF32> matrix{
+    Data::Matrix<float> matrix{
         {1.0f, 2.0f, 3.0f, 4.0f},
         {3.0f, 5.0f, 7.0f, 9.0f}
     };
@@ -74,7 +74,7 @@ TEST_CASE("Matrix scalar multiplication Test")
 
 TEST_CASE("Matrix scalar addition Test")
 {
-    Data::Matrix<Data::BaseDataF32> matrix{
+    Data::Matrix<float> matrix{
         {1.0f, 2.0f, 3.0f, 4.0f},
         {3.0f, 5.0f, 7.0f, 9.0f}
     };
@@ -86,7 +86,7 @@ TEST_CASE("Matrix scalar addition Test")
 
 TEST_CASE("Matrix scalar substraction Test")
 {
-    Data::Matrix<Data::BaseDataF32> matrix{
+    Data::Matrix<float> matrix{
         {1.0f, 2.0f, 3.0f, 4.0f},
         {3.0f, 5.0f, 7.0f, 9.0f}
     };
@@ -98,7 +98,7 @@ TEST_CASE("Matrix scalar substraction Test")
 
 TEST_CASE("Matrix scalar division Test")
 {
-    Data::Matrix<Data::BaseDataF32> matrix{
+    Data::Matrix<float> matrix{
         {1.0f, 2.0f, 3.0f, 4.0f},
         {3.0f, 5.0f, 7.0f, 9.0f}
     };
@@ -110,7 +110,7 @@ TEST_CASE("Matrix scalar division Test")
 
 TEST_CASE("Matrix SetRow Test")
 {
-    Data::Matrix<Data::BaseDataF32> matrix{
+    Data::Matrix<float> matrix{
         {1.0f, 2.0f, 3.0f, 4.0f},
         {3.0f, 5.0f, 7.0f, 9.0f}
     };
@@ -122,7 +122,7 @@ TEST_CASE("Matrix SetRow Test")
 
 TEST_CASE("Matrix SetColumn Test")
 {
-    Data::Matrix<Data::BaseDataF32> matrix{
+    Data::Matrix<float> matrix{
         {1.0f, 2.0f, 3.0f, 4.0f},
         {3.0f, 5.0f, 7.0f, 9.0f}
     };

@@ -8,137 +8,142 @@
 
 namespace Data
 {
-	template <typename DataType>
-	Matrix<DataType>::Matrix(size_t M, size_t N, typename DataType::AttributeType initialValue)
+	template <typename Type>
+	Matrix<Type>::Matrix(size_t M, size_t N, const Type& initialValue)
 	{
 		Resize(M, N, initialValue);
 	}
 
-	template <typename DataType>
-	Matrix<DataType>::Matrix(const std::initializer_list<DataType>& list)
+	template <typename Type>
+	Matrix<Type>::Matrix(const std::initializer_list<std::initializer_list<Type>>& list)
 	{
 		Set(list);
 	}
 
-	template <typename DataType>
-	Matrix<DataType>::Matrix(const std::vector<DataType>& values)
+	template <typename Type>
+	Matrix<Type>::Matrix(const std::vector<RowType>& values)
 	{
 		Set(values);
 	}
 
-	template <typename DataType>
-	void Matrix<DataType>::Resize(size_t M, size_t N, typename DataType::AttributeType initialValue)
+	template <typename Type>
+	void Matrix<Type>::Resize(size_t M, size_t N, const Type& initialValue)
 	{
 		_numCol = M; _numRow = N;
-		_elements.resize(_numRow);
-		for (auto& row : _elements)
-			row.Resize(_numCol, initialValue);
+		_elements.resize(_numRow, RowType(_numCol, initialValue));
 	}
 
-	template <typename DataType>
-	void Matrix<DataType>::Set(const std::initializer_list<DataType>& list)
+	template <typename Type>
+	void Matrix<Type>::Set(const std::initializer_list<std::initializer_list<Type>>& list)
 	{
 		assert(list.size() > 0);
-		_elements.assign(list);
-		_numRow = _elements.size(); 
-		_numCol = _elements.front().Size();
+		_numRow = list.size();
+		_numCol = list.begin()->size();
+		_elements.reserve(_numRow);
+		for (const auto& row : list)
+			_elements.emplace_back(row);
 	}
 
-	template <typename DataType>
-	void Matrix<DataType>::Set(const std::vector<DataType>& values)
+	template <typename Type>
+	void Matrix<Type>::Set(const std::vector<RowType>& values)
 	{
 		assert(list.size() > 0);
+		_numRow = values.size();
+		_numCol = values.begin()->size();
 		_elements.assign(values.begin(), values.end());
-		_numRow = _elements.size();
-		_numCol = _elements.front().Size();
 	}
 
-	template <typename DataType>
-	void Matrix<DataType>::SetRow(const DataType& data, size_t i)
+	template <typename Type>
+	void Matrix<Type>::SetRow(const RowType& data, size_t i)
 	{
-		assert(data.Size() == _numCol);
+		assert(data.size() == _numCol);
 		_elements[i] = data;
 	}
 
-	template <typename DataType>
-	void Matrix<DataType>::SetColumn(const std::initializer_list<typename DataType::AttributeType>& list, size_t i)
+	template <typename Type>
+	void Matrix<Type>::SetColumn(const RowType& data, size_t i)
 	{
-		assert(list.size() == _numRow);
+		assert(data.size() == _numRow);
 		size_t index = 0;
-		for (const auto& data : list)
-			_elements[index++][i] = data;
+		for (const auto& value : data)
+			_elements[index++][i] = value;
 	}
 
-	template <typename DataType>
-	const Matrix<DataType> Matrix<DataType>::operator+(const typename DataType::AttributeType& scalar)
+	template <typename Type>
+	const Matrix<Type> Matrix<Type>::operator+(const Type& scalar)
 	{
-		Matrix<DataType> matrix(*this);
+		Matrix<Type> matrix(*this);
 		matrix += scalar;
 		return matrix;
 	}
 
-	template <typename DataType>
-	const Matrix<DataType> Matrix<DataType>::operator-(const typename DataType::AttributeType& scalar)
+	template <typename Type>
+	const Matrix<Type> Matrix<Type>::operator-(const Type& scalar)
 	{
-		Matrix<DataType> matrix(*this);
+		Matrix<Type> matrix(*this);
 		matrix -= scalar;
 		return matrix;
 	}
 
-	template <typename DataType>
-	const Matrix<DataType> Matrix<DataType>::operator*(const typename DataType::AttributeType& scalar)
+	template <typename Type>
+	const Matrix<Type> Matrix<Type>::operator*(const Type& scalar)
 	{
-		Matrix<DataType> matrix(*this);
+		Matrix<Type> matrix(*this);
 		matrix *= scalar;
 		return matrix;
 	}
 
-	template <typename DataType>
-	const Matrix<DataType> Matrix<DataType>::operator/(const typename DataType::AttributeType& scalar)
+	template <typename Type>
+	const Matrix<Type> Matrix<Type>::operator/(const Type& scalar)
 	{
-		Matrix<DataType> matrix(*this);
+		Matrix<Type> matrix(*this);
 		matrix /= scalar;
 		return matrix;
 	}
 
-	template <typename DataType>
-	Matrix<DataType>& Matrix<DataType>::operator+=(const typename DataType::AttributeType& scalar)
+	template <typename Type>
+	Matrix<Type>& Matrix<Type>::operator+=(const Type& scalar)
 	{
 		for (auto& row : _elements)
-			row += scalar;
+		for (auto& value : row)
+			value += scalar;
 		return *this;
 	}
 
-	template <typename DataType>
-	Matrix<DataType>& Matrix<DataType>::operator-=(const typename DataType::AttributeType& scalar)
+	template <typename Type>
+	Matrix<Type>& Matrix<Type>::operator-=(const Type& scalar)
 	{
 		for (auto& row : _elements)
-			row -= scalar;
+		for (auto& value : row)
+			value -= scalar;
 		return *this;
 	}
 
-	template <typename DataType>
-	Matrix<DataType>& Matrix<DataType>::operator*=(const typename DataType::AttributeType& scalar)
+	template <typename Type>
+	Matrix<Type>& Matrix<Type>::operator*=(const Type& scalar)
 	{
 		for (auto& row : _elements)
-			row *= scalar;
+		for (auto& value : row)
+			value *= scalar;
 		return *this;
 	}
 
-	template <typename DataType>
-	Matrix<DataType>& Matrix<DataType>::operator/=(const typename DataType::AttributeType& scalar)
+	template <typename Type>
+	Matrix<Type>& Matrix<Type>::operator/=(const Type& scalar)
 	{
+		constexpr Type kEpsilon = static_cast<Type>(1e-9);
 		for (auto& row : _elements)
-			row /= scalar;
+		for (auto& value : row)
+			value /= (scalar + kEpsilon);
 		return *this;
 	}
 
-	template <typename DataType>
+	template <typename Type>
 	template <typename E>
-	const Matrix<DataType> Matrix<DataType>::operator+(const Matrix<E>& matrix)
+	const Matrix<Type> Matrix<Type>::operator+(const Matrix<E>& matrix)
 	{
 		assert(_numCol == matrix._numCol && _numRow == matrix._numRow);
-		Matrix<DataType> resultMat(_numCol, _numRow);
+		Matrix<Type> resultMat(_numCol, _numRow);
 		
 		for (size_t i = 0; i < _numRow; ++i)
 		for (size_t j = 0; j < _numCol; ++j)
@@ -147,12 +152,12 @@ namespace Data
 		return resultMat;
 	}
 
-	template <typename DataType>
+	template <typename Type>
 	template <typename E>
-	const Matrix<DataType> Matrix<DataType>::operator-(const Matrix<E>& matrix)
+	const Matrix<Type> Matrix<Type>::operator-(const Matrix<E>& matrix)
 	{
 		assert(_numCol == matrix._numCol && _numRow == matrix._numRow);
-		Matrix<DataType> resultMat(_numCol, _numRow);
+		Matrix<Type> resultMat(_numCol, _numRow);
 
 		for (size_t i = 0; i < _numRow; ++i)
 		for (size_t j = 0; j < _numCol; ++j)
@@ -161,17 +166,17 @@ namespace Data
 		return resultMat;
 	}
 
-	template <typename DataType>
+	template <typename Type>
 	template <typename E>
-	const Matrix<DataType> Matrix<DataType>::operator*(const Matrix<E>& matrix)
+	const Matrix<Type> Matrix<Type>::operator*(const Matrix<E>& matrix)
 	{
 		assert(_numCol == matrix._numRow);
-		Matrix<DataType> resultMat(matrix._numCol, _numRow);
+		Matrix<Type> resultMat(matrix._numCol, _numRow);
 
 		for (size_t i = 0; i < resultMat._numRow; ++i)
 		for (size_t j = 0; j < resultMat._numCol; ++j)
 		{
-			typename DataType::AttributeType sum{ 0 };
+			Type sum{ 0 };
 			for (size_t k = 0; k < _numCol; ++k)
 				sum += _elements[i][k] * matrix[k][j];
 			resultMat[i][j] = sum;
@@ -180,9 +185,9 @@ namespace Data
 		return resultMat;
 	}
 
-	template <typename DataType>
+	template <typename Type>
 	template <typename E>
-	Matrix<DataType>& Matrix<DataType>::operator+=(const Matrix<E>& matrix)
+	Matrix<Type>& Matrix<Type>::operator+=(const Matrix<E>& matrix)
 	{
 		assert(_numCol == matrix._numCol && _numRow == matrix._numRow);
 
@@ -193,9 +198,9 @@ namespace Data
 		return *this;
 	}
 
-	template <typename DataType>
+	template <typename Type>
 	template <typename E>
-	Matrix<DataType>& Matrix<DataType>::operator-=(const Matrix<E>& matrix)
+	Matrix<Type>& Matrix<Type>::operator-=(const Matrix<E>& matrix)
 	{
 		assert(_numCol == matrix._numCol && _numRow == matrix._numRow);
 
@@ -206,72 +211,72 @@ namespace Data
 		return *this;
 	}
 
-	template <typename DataType>
-	DataType& Matrix<DataType>::operator[](size_t i)
+	template <typename Type>
+	typename Matrix<Type>::RowType& Matrix<Type>::operator[](size_t i)
 	{
 		assert(0 <= i && i < _numRow);
 		return _elements[i];
 	}
 
-	template <typename DataType>
-	const DataType& Matrix<DataType>::operator[](size_t i) const
+	template <typename Type>
+	const typename Matrix<Type>::RowType& Matrix<Type>::operator[](size_t i) const
 	{
 		assert(0 <= i && i < _numRow);
 		return _elements[i];
 	}
 
-	template <typename DataType>
-	typename DataType::AttributeType& Matrix<DataType>::operator()(size_t i, size_t j)
+	template <typename Type>
+	Type& Matrix<Type>::operator()(size_t i, size_t j)
 	{
 		assert(0 <= i && i < _numRow && 0 <= j && j < _numCol);
 		return _elements[i][j];
 	}
 
-	template <typename DataType>
-	const typename DataType::AttributeType& Matrix<DataType>::operator()(size_t i, size_t j) const
+	template <typename Type>
+	const Type& Matrix<Type>::operator()(size_t i, size_t j) const
 	{
 		assert(0 <= i && i < _numRow && 0 <= j && j < _numCol);
 		return _elements[i][j];
 	}
 
-	template <typename DataType>
-	size_t Matrix<DataType>::Size() const
+	template <typename Type>
+	size_t Matrix<Type>::Size() const
 	{
 		return _numRow * _numRow;
 	}
 
-	template <typename DataType>
-	size_t Matrix<DataType>::Col() const
+	template <typename Type>
+	size_t Matrix<Type>::Col() const
 	{
 		return _numCol;
 	}
 
-	template <typename DataType>
-	size_t Matrix<DataType>::Row() const
+	template <typename Type>
+	size_t Matrix<Type>::Row() const
 	{
 		return _numRow;
 	}
 
-	template <typename DataType>
-	typename Matrix<DataType>::Iterator Matrix<DataType>::begin()
+	template <typename Type>
+	typename Matrix<Type>::Iterator Matrix<Type>::begin()
 	{
 		return _elements.begin();
 	}
 
-	template <typename DataType>
-	typename Matrix<DataType>::Iterator Matrix<DataType>::end()
+	template <typename Type>
+	typename Matrix<Type>::Iterator Matrix<Type>::end()
 	{
 		return _elements.end();
 	}
 
-	template <typename DataType>
-	typename Matrix<DataType>::ConstIterator Matrix<DataType>::cbegin() const
+	template <typename Type>
+	typename Matrix<Type>::ConstIterator Matrix<Type>::cbegin() const
 	{
 		return _elements.cbegin();
 	}
 
-	template <typename DataType>
-	typename Matrix<DataType>::ConstIterator Matrix<DataType>::cend() const
+	template <typename Type>
+	typename Matrix<Type>::ConstIterator Matrix<Type>::cend() const
 	{
 		return _elements.cend();
 	}

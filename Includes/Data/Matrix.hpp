@@ -7,9 +7,8 @@
 #ifndef MATRIX_HPP
 #define MATRIX_HPP
 
-#include <Data/BaseData.hpp>
 #include <initializer_list>
-#include <array>
+#include <vector>
 
 namespace Data
 {
@@ -20,18 +19,19 @@ namespace Data
 	//! 
 	//! \tparam Type - matrix element type
 	//! 
-	template <typename DataType = BaseDataF32>
+	template <typename Type>
 	class Matrix
 	{
 	public:
-		using ContainerType = std::vector<DataType>;
+		using RowType = std::vector<Type>;
+		using ContainerType = std::vector<RowType>;
 		using Iterator = typename ContainerType::iterator;
 		using ConstIterator = typename ContainerType::const_iterator;
 		//! Default constructor
 		//! \warning This will generate zero sized matrix (actually it is not a matrix)
 		Matrix() = default;
 		//! Generate initialized matrix with given column length and row length
-		Matrix(size_t M, size_t N, typename DataType::AttributeType initialValue = 0);
+		Matrix(size_t M, size_t N, const Type& initialValue = 0);
 		//!
 		//! \brief constructs a matrix with given initializer list \p list
 		//! 
@@ -48,13 +48,13 @@ namespace Data
 		//! 
 		//! \param list - initializer list that should be copy to the new matrix.
 		//! 
-		Matrix(const std::initializer_list<DataType>& list);
+		Matrix(const std::initializer_list<std::initializer_list<Type>>& list);
 		//! Initialize _attributes with given vector values.
-		Matrix(const std::vector<DataType>& values);
+		Matrix(const std::vector<RowType>& values);
 		//! Default destructor
 		~Matrix() = default;
 		//! Set the matrix with the new column length and row length.
-		void Resize(size_t M, size_t N, typename DataType::AttributeType initialValue = 0);
+		void Resize(size_t M, size_t N, const Type& initialValue = 0);
 		//!
 		//! \brief constructs a matrix with given initializer list \p list
 		//! 
@@ -71,55 +71,55 @@ namespace Data
 		//! 
 		//! \param list - initializer list that should be copy to the new matrix.
 		//! 
-		void Set(const std::initializer_list<DataType>& list);
+		void Set(const std::initializer_list<std::initializer_list<Type>>& list);
 		//! Initialize _attributes with given vector values.
-		void Set(const std::vector<DataType>& values);
+		void Set(const std::vector<RowType>& values);
 		//! Set elements of the i-th row
-		void SetRow(const DataType& data, size_t i);
+		void SetRow(const RowType& data, size_t i);
 		//! Set element of the i-th column
-		void SetColumn(const std::initializer_list<typename DataType::AttributeType>& list, size_t i);
+		void SetColumn(const RowType& data, size_t i);
 		//! Returns new matrix + input scalar
-		const Matrix<DataType> operator+(const typename DataType::AttributeType& scalar);
+		const Matrix<Type> operator+(const Type& scalar);
 		//! Returns new matrix - input scalar
-		const Matrix<DataType> operator-(const typename DataType::AttributeType& scalar);
+		const Matrix<Type> operator-(const Type& scalar);
 		//! Returns new matrix * input scalar
-		const Matrix<DataType> operator*(const typename DataType::AttributeType& scalar);
+		const Matrix<Type> operator*(const Type& scalar);
 		//! Returns new matrix / input scalar
-		const Matrix<DataType> operator/(const typename DataType::AttributeType& scalar);
+		const Matrix<Type> operator/(const Type& scalar);
 		//! Returns this matrix + input scalar
-		Matrix<DataType>& operator+=(const typename DataType::AttributeType& scalar);
+		Matrix<Type>& operator+=(const Type& scalar);
 		//! Returns this matrix - input scalar
-		Matrix<DataType>& operator-=(const typename DataType::AttributeType& scalar);
+		Matrix<Type>& operator-=(const Type& scalar);
 		//! Returns this matrix * input scalar
-		Matrix<DataType>& operator*=(const typename DataType::AttributeType& scalar);
+		Matrix<Type>& operator*=(const Type& scalar);
 		//! Returns this matrix / input scalar
-		Matrix<DataType>& operator/=(const typename DataType::AttributeType& scalar);
+		Matrix<Type>& operator/=(const Type& scalar);
 		//! Returns new matrix + input scalar
 		template <typename E>
-		const Matrix<DataType> operator+(const Matrix<E>& matrix);
+		const Matrix<Type> operator+(const Matrix<E>& matrix);
 		//! Returns new matrix - input matrix
 		template <typename E>
-		const Matrix<DataType> operator-(const Matrix<E>& matrix);
+		const Matrix<Type> operator-(const Matrix<E>& matrix);
 		//! Returns new matrix * input matrix
 		template <typename E>
-		const Matrix<DataType> operator*(const Matrix<E>& matrix);
+		const Matrix<Type> operator*(const Matrix<E>& matrix);
 		//! Returns this matrix + input matrix
 		template <typename E>
-		Matrix<DataType>& operator+=(const Matrix<E>& matrix);
+		Matrix<Type>& operator+=(const Matrix<E>& matrix);
 		//! Returns this matrix - input matrix
 		template <typename E>
-		Matrix<DataType>& operator-=(const Matrix<E>& matrix);
+		Matrix<Type>& operator-=(const Matrix<E>& matrix);
 		//! Returns this matrix * input matrix
 		template <typename E>
-		Matrix<DataType>& operator*=(const Matrix<E>& matrix);
+		Matrix<Type>& operator*=(const Matrix<E>& matrix);
 		//! Returns reference of i-th element
-		DataType& operator[](size_t i);
+		RowType& operator[](size_t i);
 		//! Returns const reference of i-th element
-		const DataType& operator[](size_t i) const;
+		const RowType& operator[](size_t i) const;
 		//! Returns reference of (i * M + j)th element
-		typename DataType::AttributeType& operator()(size_t i, size_t j);
+		Type& operator()(size_t i, size_t j);
 		//! Returns const reference of (i * M + j)th element
-		const typename DataType::AttributeType& operator()(size_t i, size_t j) const;
+		const Type& operator()(size_t i, size_t j) const;
 		//! Returns the total number of elements in this matrix.
 		size_t Size() const;
 		//! Returns the number of elements in one column
