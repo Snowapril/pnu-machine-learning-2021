@@ -4,55 +4,65 @@
 // personal capacity and are not conveying any rights to any intellectual
 // property of any third parties.
 
-#ifndef BASE_LEARNER_HPP
-#define BASE_LEARNER_HPP
+#ifndef ACTIVATION_HPP
+#define ACTIVATION_HPP
 
-#include <Data/StructuredData.hpp>
-#include <Generator/BaseGenerator.hpp>
-#include <vector>
 #include <type_traits>
+#include <functional>
 
 namespace Learner
 {
 	namespace Activation
 	{
-		template <typename Type, typename = std::is_floating_point_v<Type>>
-		inline Type ForwardSigmoid(const Type& val)
-		{
-			return 1 / static_cast<Type>(1 + std::exp(-val));
-		}
+		template <typename Type, typename = std::enable_if_t<std::is_floating_point_v<Type>>>
+		using ActivationFunc = std::function<Type(const Type&)>;
 
-		template <typename Type, typename = std::is_floating_point_v<Type>>
-		inline Type BackwardSigmoid(const Type& val)
+		template <typename Type, typename = std::enable_if_t<std::is_floating_point_v<Type>>>
+		class Sigmoid
 		{
-			const Type forwardSigmoidCache = FowradSigmoid(val);
-			return forwardSigmoidCache * (1 - forwardSigmoidCache);
-		}
+		public:
+			inline static Type Forward(const Type& val)
+			{
+				return 1 / static_cast<Type>(1 + std::exp(-val));
+			}
 
-		template <typename Type, typename = std::is_floating_point_v<Type>>
-		inline Type ForwardReLU(const Type& val)
-		{
-			return val >= 0 ? val : 0;
-		}
+			inline static Type Backward(const Type& val)
+			{
+				const Type forwardSigmoidCache = Forward(val);
+				return forwardSigmoidCache * (1 - forwardSigmoidCache);
+			}
+		};
 
-		template <typename Type, typename = std::is_floating_point_v<Type>>
-		inline Type BackwardReLU(const Type& val)
+		template <typename Type, typename = std::enable_if_t<std::is_floating_point_v<Type>>>
+		class TanH
 		{
-			return val >= 0 ? 1 : 0;
-		}
+		public:
+			inline static Type Forward(const Type& val)
+			{
+				return std::tanh(val);
+			}
 
-		template <typename Type, typename = std::is_floating_point_v<Type>>
-		inline Type ForwardTanH(const Type& val)
-		{
-			return std::tanh(val);
-		}
+			inline static Type Backward(const Type& val)
+			{
+				const Type fowardTanHCache = Forward(val);
+				return 1 - fowardTanHCache * fowardTanHCache;
+			}
+		};
 
-		template <typename Type, typename = std::is_floating_point_v<Type>>
-		inline Type BackwardTanH(const Type& val)
+		template <typename Type, typename = std::enable_if_t<std::is_floating_point_v<Type>>>
+		class ReLU
 		{
-			const Type fowardTanHCache = ForwardTanH(val);
-			return 1 - fowardTanHCache * fowardTanHCache;
-		}
+		public:
+			inline static Type Forward(const Type& val)
+			{
+				return val >= 0 ? val : 0;
+			}
+
+			inline static Type Backward(const Type& val)
+			{
+				return val >= 0 ? 1 : 0;
+			}
+		};
 	};
 };
 
