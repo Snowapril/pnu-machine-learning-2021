@@ -4,9 +4,12 @@
 // personal capacity and are not conveying any rights to any intellectual
 // property of any third parties.
 
+#ifndef MATRIX_IMPL_HPP
+#define MATRIX_IMPL_HPP
+
 #include <cassert>
 
-namespace Data
+namespace Math
 {
 	template <typename Type>
 	Matrix<Type>::Matrix(size_t M, size_t N, const Type& initialValue)
@@ -281,3 +284,5 @@ namespace Data
 		return _elements.cend();
 	}
 };
+
+#endif //! end of Matrix-Impl.hpp

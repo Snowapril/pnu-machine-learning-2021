@@ -10,7 +10,7 @@
 #include <initializer_list>
 #include <vector>
 
-namespace Data
+namespace Math
 {
 	//!
 	//! \brief dynamic sized matrix.
@@ -30,7 +30,11 @@ namespace Data
 		//! Default constructor
 		//! \warning This will generate zero sized matrix (actually it is not a matrix)
 		Matrix() = default;
-		//! Generate initialized matrix with given column length and row length
+		//! 
+		//! \brief Generate initialized matrix with given column length and row length
+		//! \param M - number of columns (width)
+		//! \param N - number of rows (height)
+		//! 
 		Matrix(size_t M, size_t N, const Type& initialValue = 0);
 		//!
 		//! \brief constructs a matrix with given initializer list \p list
@@ -53,7 +57,11 @@ namespace Data
 		Matrix(const std::vector<RowType>& values);
 		//! Default destructor
 		~Matrix() = default;
-		//! Set the matrix with the new column length and row length.
+		//! 
+		//! \brief Set the matrix with the new column length and row length.
+		//! \param M - number of columns (width)
+		//! \param N - number of rows (height)
+		//! 
 		void Resize(size_t M, size_t N, const Type& initialValue = 0);
 		//!
 		//! \brief constructs a matrix with given initializer list \p list
@@ -139,7 +147,11 @@ namespace Data
 		ContainerType _elements;
 		size_t _numCol{ 0 }, _numRow{ 0 };
 	};
+
+	//! Matrix type aliasings
+	using FMatrix = Matrix<float>;
+	using DMatrix = Matrix<double>;
 };
 
-#include <Data/Matrix-Impl.hpp>
+#include <Math/Matrix-Impl.hpp>
 #endif //! end of Matrix.hpp
