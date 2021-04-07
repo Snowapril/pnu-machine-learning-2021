@@ -17,6 +17,8 @@ namespace Layer
 	class Activation : public BaseLayer<Type>
 	{
 	public:
+		using InputType = Math::Matrix<Type>;
+		using OutputType = Math::Matrix<Type>;
 		//! Default constructor
 		Activation() = default;
 		//! Default destructor
@@ -33,6 +35,8 @@ namespace Layer
 	class Sigmoid : public Activation<Type>
 	{
 	public:
+		using InputType = Math::Matrix<Type>;
+		using OutputType = Math::Matrix<Type>;
 		//! Default constructor
 		Sigmoid() = default;
 		//! Default destructor
@@ -75,6 +79,8 @@ namespace Layer
 	class TanH : public Activation<Type>
 	{
 	public:
+		using InputType = Math::Matrix<Type>;
+		using OutputType = Math::Matrix<Type>;
 		//! Default constructor
 		TanH() = default;
 		//! Default destructor
@@ -119,6 +125,8 @@ namespace Layer
 	class ReLU : public Activation<Type>
 	{
 	public:
+		using InputType = Math::Matrix<Type>;
+		using OutputType = Math::Matrix<Type>;
 		//! Default constructor
 		ReLU() = default;
 		//! Default destructor

@@ -14,6 +14,11 @@ namespace Generator
 	class CrossFoldGenerator : public BaseGenerator
 	{
 	public:
+		using DataType = Math::FMatrix;
+		using ContainerType = std::vector<DataType>;
+		using Iterator = typename ContainerType::iterator;
+		using ConstIterator = typename ContainerType::const_iterator;
+		using BatchType = std::pair<ConstIterator, ConstIterator>;
 		//! Default constructor
 		CrossFoldGenerator() = default;
 		//! Default destructor

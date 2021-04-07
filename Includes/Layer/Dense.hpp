@@ -17,6 +17,8 @@ namespace Layer
 	class Dense : public BaseLayer<Type>
 	{
 	public:
+		using InputType = Math::Matrix<Type>;
+		using OutputType = Math::Matrix<Type>;
 		//! Default constructor
 		Dense(size_t M, size_t N, WeightInitializer<Type> initializer = Initializer::Constant<Type>)
 		{

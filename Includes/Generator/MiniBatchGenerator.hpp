@@ -14,6 +14,11 @@ namespace Generator
 	class MiniBatchGenerator : public BaseGenerator
 	{
 	public:
+		using DataType = Math::FMatrix;
+		using ContainerType = std::vector<DataType>;
+		using Iterator = typename ContainerType::iterator;
+		using ConstIterator = typename ContainerType::const_iterator;
+		using BatchType = std::pair<ConstIterator, ConstIterator>;
 		//! Default constructor
 		MiniBatchGenerator() = default;
 		//! Default destructor
