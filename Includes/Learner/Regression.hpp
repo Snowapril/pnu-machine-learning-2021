@@ -8,8 +8,8 @@
 #define REGRESSION_HPP
 
 #include <Learner/BaseLearner.hpp>
-#include <Learner/Activation.hpp>
 #include <Learner/LearningRate.hpp>
+#include <Layer/BaseLayer.hpp>
 #include <vector>
 #include <functional>
 
@@ -25,38 +25,14 @@ namespace Learner
 		Regression() = default;
 		//! Default destructor
 		~Regression() = default;
-		//!
-		//! \brief simple dense layer structure
-		//! \tparam Type - weight values type
-		//! 
-		template <typename Type, typename = std::enable_if_t<std::is_floating_point_v<Type>>>
-		struct Dense
-		{
-			Math::Matrix<Type> weights;
-			Activation::ActivationFunc<Type> activationForward;
-			Activation::ActivationFunc<Type> activationBackward;
-		};
-		//! 
-		//! \brief Add dense layer with matrix and activation function.
-		//! \tparam ActivationType - this can be Activation::Sigmoid, Activation::ReLU, etc..
-		//! \tparam WeightInitializer - this can be WeightInitializer::Zero or WeightInitializer::XavierUniform
-		template <typename ActivationType, typename WeightInitializer>
-		void AddDenseLayer(size_t numInput, size_t numOutput, WeightInitializer initializer)
-		{
-			if (!_denseLayers.empty())
-				assert(_denseLayers.back().weights.Col() == numInput);
-
-			Dense<float> denseLayer;
-			denseLayer.weights.Resize(numInput, numOutput);
-			initializer(denseLayer.weights);
-			denseLayer.activationForward = ActivationType::Forward;
-			denseLayer.activationBackward = ActivationType::Backward;
-			_denseLayers.emplace_back(std::move(denseLayer));
-		}
+		//! Add unit calculation layer
+		void AddUnitLayer(const std::shared_ptr<Layer::BaseLayer<float>>& layer);
 		//! Set learning rate handler function
 		void SetLearningRateHandler(LearningRate::LearningRateFunc<float> handler);
+		//! Summarize the model
+		void Summarize() const;
 	protected:
-		std::vector< Dense<float> > _denseLayers;
+		std::vector<std::shared_ptr<Layer::BaseLayer<float>>> _layers;
 		LearningRate::LearningRateFunc<float> _lrHandler { LearningRate::Constant<float> };
 	protected:
 	private:

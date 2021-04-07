@@ -11,8 +11,11 @@
 #include <type_traits>
 #include <functional>
 
-namespace Learner
+namespace Layer
 {
+	template <typename Type, typename = std::enable_if_t<std::is_floating_point_v<Type>>>
+	using WeightInitializer = std::function<void(Math::Matrix<Type>&, const Type&)>;
+
 	namespace Initializer
 	{
 		//!
@@ -24,8 +27,8 @@ namespace Learner
 		template <typename Type, typename = std::enable_if_t<std::is_floating_point_v<Type>>>
 		void Constant(Math::Matrix<Type>& weight, const Type& constant)
 		{
-			for (size_t i = 0; i < weight.Col(); ++i)
-				for (size_t j = 0; j < weight.Row(); ++j)
+			for (size_t i = 0; i < weight.Row(); ++i)
+				for (size_t j = 0; j < weight.Col(); ++j)
 					weight[i][j] = constant;
 		}
 
@@ -39,9 +42,9 @@ namespace Learner
 		void XavierUniform(Math::Matrix<Type>& weight, const Type& parameter)
 		{
 			// TODO(snowapril) : must implement xavier uniform initialization.
-			
-			for (size_t i = 0; i < weight.Col(); ++i)
-				for (size_t j = 0; j < weight.Row(); ++j)
+
+			for (size_t i = 0; i < weight.Row(); ++i)
+				for (size_t j = 0; j < weight.Col(); ++j)
 					weight[i][j] = parameter;
 		}
 	};
