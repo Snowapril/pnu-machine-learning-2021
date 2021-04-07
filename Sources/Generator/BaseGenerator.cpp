@@ -30,18 +30,36 @@ namespace Generator
 
 		const std::string& extension = filename.substr(filename.find_last_of('.'));
 		std::vector<std::vector<std::string>> parsedContents;
+		bool parsingResult = true;
 		if (extension == ".csv")
-			return Utils::DataLoader::ParseContentsFromCSV(contents, &parsedContents, exceptHeader);
+			parsingResult = Utils::DataLoader::ParseContentsFromCSV(contents, &parsedContents, exceptHeader);
 		else if (extension == ".hdf5")
-			return false;
+			parsingResult = false;
 		else
 		{
 			std::cerr << "Unknown dataset type : " << extension << std::endl;
-			return false;
+			parsingResult = false;
 		}
 
-		// TODO(snowapril) : Parse the data from the parsed contents.
-		(void)targetIndices;
+		if (!parsingResult) return false;
+
+		for (const auto& words : parsedContents)
+		{
+			const size_t numInput = words.size() - targetIndices.size(), numLabel = targetIndices.size();
+			Math::FMatrix input(numInput, 1), label(numLabel, 1);
+			size_t inputIdx = 0, labelIdx = 0;
+			for (size_t i = 0; i < words.size(); ++i)
+			{
+				const float value = std::stof(words[i]);
+				if (std::find(targetIndices.begin(), targetIndices.end(), i) == targetIndices.end())
+					input[0][inputIdx++] = value;
+				else
+					label[0][labelIdx++] = value;
+			}
+			_inputs.emplace_back(std::move(input));
+			_labels.emplace_back(std::move(label));
+		}
+
 		return true;
 	}
 
