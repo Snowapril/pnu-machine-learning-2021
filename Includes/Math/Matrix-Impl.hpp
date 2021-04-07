@@ -79,7 +79,7 @@ namespace Math
 	template <typename Type>
 	Matrix<Type> Matrix<Type>::Transposed() const
 	{
-		Matrix<Type> tranposed(_numRow, _numCol);
+		Matrix<Type> transposed(_numRow, _numCol);
 		for (size_t i = 0; i < _numRow; ++i)
 		for (size_t j = 0; j < _numCol; ++j)
 			transposed[j][i] = _elements[i][j];
