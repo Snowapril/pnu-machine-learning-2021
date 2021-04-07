@@ -30,10 +30,60 @@ namespace Math
 	}
 
 	template <typename Type>
+	Matrix<Type>::Matrix(Matrix<Type>&& rmat)
+	{
+		this->_elements = std::move(rmat._elements);
+		this->_numCol =  rmat._numCol;
+		this->_numRow =  rmat._numRow;
+	}
+
+	template <typename Type>
+	Matrix<Type>::Matrix(const Matrix<Type>& rmat)
+	{
+		this->_elements.assign(rmat.cbegin(), rmat.cend());
+		this->_numCol = rmat._numCol;
+		this->_numRow = rmat._numRow;
+	}
+
+	template <typename Type>
+	Matrix<Type>& Matrix<Type>::operator=(Matrix<Type>&& rmat)
+	{
+		if (rmat != *this)
+		{
+			this->_elements = std::move(rmat._elements);
+			this->_numCol = rmat._numCol;
+			this->_numRow = rmat._numRow;
+		}
+		return *this;
+	}
+
+	template <typename Type>
+	Matrix<Type>& Matrix<Type>::operator=(const Matrix<Type>& rmat)
+	{
+		if (rmat != *this)
+		{
+			this->_elements.assign(rmat.cbegin(), rmat.cend());
+			this->_numCol = rmat._numCol;
+			this->_numRow = rmat._numRow;
+		}
+		return *this;
+	}
+
+	template <typename Type>
 	void Matrix<Type>::Resize(size_t M, size_t N, const Type& initialValue)
 	{
 		_numCol = M; _numRow = N;
 		_elements.resize(_numRow, RowType(_numCol, initialValue));
+	}
+
+	template <typename Type>
+	Matrix<Type> Matrix<Type>::Transposed() const
+	{
+		Matrix<Type> tranposed(_numRow, _numCol);
+		for (size_t i = 0; i < _numRow; ++i)
+		for (size_t j = 0; j < _numCol; ++j)
+			transposed[j][i] = _elements[i][j];
+		return transposed;
 	}
 
 	template <typename Type>
@@ -48,7 +98,7 @@ namespace Math
 	}
 
 	template <typename Type>
-	void Matrix<Type>::Set(const std::vector<RowType>& values)
+	void Matrix<Type>::Set(const ContainerType& values)
 	{
 		assert(list.size() > 0);
 		_numRow = values.size();
@@ -73,7 +123,26 @@ namespace Math
 	}
 
 	template <typename Type>
-	const Matrix<Type> Matrix<Type>::operator+(const Type& scalar)
+	template <typename E>
+	Matrix<Type> Matrix<Type>::Mul(const Matrix<E>& matrix) const
+	{
+		assert(_numCol == matrix._numRow);
+		Matrix<Type> resultMat(matrix._numCol, _numRow);
+
+		for (size_t i = 0; i < resultMat._numRow; ++i)
+			for (size_t j = 0; j < resultMat._numCol; ++j)
+			{
+				Type sum{ 0 };
+				for (size_t k = 0; k < _numCol; ++k)
+					sum += _elements[i][k] * matrix[k][j];
+				resultMat[i][j] = sum;
+			}
+
+		return resultMat;
+	}
+
+	template <typename Type>
+	const Matrix<Type> Matrix<Type>::operator+(const Type& scalar) const
 	{
 		Matrix<Type> matrix(*this);
 		matrix += scalar;
@@ -81,7 +150,7 @@ namespace Math
 	}
 
 	template <typename Type>
-	const Matrix<Type> Matrix<Type>::operator-(const Type& scalar)
+	const Matrix<Type> Matrix<Type>::operator-(const Type& scalar) const
 	{
 		Matrix<Type> matrix(*this);
 		matrix -= scalar;
@@ -89,7 +158,7 @@ namespace Math
 	}
 
 	template <typename Type>
-	const Matrix<Type> Matrix<Type>::operator*(const Type& scalar)
+	const Matrix<Type> Matrix<Type>::operator*(const Type& scalar) const
 	{
 		Matrix<Type> matrix(*this);
 		matrix *= scalar;
@@ -97,7 +166,7 @@ namespace Math
 	}
 
 	template <typename Type>
-	const Matrix<Type> Matrix<Type>::operator/(const Type& scalar)
+	const Matrix<Type> Matrix<Type>::operator/(const Type& scalar) const
 	{
 		Matrix<Type> matrix(*this);
 		matrix /= scalar;
@@ -143,7 +212,7 @@ namespace Math
 
 	template <typename Type>
 	template <typename E>
-	const Matrix<Type> Matrix<Type>::operator+(const Matrix<E>& matrix)
+	const Matrix<Type> Matrix<Type>::operator+(const Matrix<E>& matrix) const
 	{
 		assert(_numCol == matrix._numCol && _numRow == matrix._numRow);
 		Matrix<Type> resultMat(_numCol, _numRow);
@@ -157,7 +226,7 @@ namespace Math
 
 	template <typename Type>
 	template <typename E>
-	const Matrix<Type> Matrix<Type>::operator-(const Matrix<E>& matrix)
+	const Matrix<Type> Matrix<Type>::operator-(const Matrix<E>& matrix) const
 	{
 		assert(_numCol == matrix._numCol && _numRow == matrix._numRow);
 		Matrix<Type> resultMat(_numCol, _numRow);
@@ -171,19 +240,14 @@ namespace Math
 
 	template <typename Type>
 	template <typename E>
-	const Matrix<Type> Matrix<Type>::operator*(const Matrix<E>& matrix)
+	const Matrix<Type> Matrix<Type>::operator*(const Matrix<E>& matrix) const
 	{
-		assert(_numCol == matrix._numRow);
-		Matrix<Type> resultMat(matrix._numCol, _numRow);
+		assert(_numCol == matrix._numCol && _numRow == matrix._numRow);
+		Matrix<Type> resultMat(_numCol, _numRow);
 
-		for (size_t i = 0; i < resultMat._numRow; ++i)
-		for (size_t j = 0; j < resultMat._numCol; ++j)
-		{
-			Type sum{ 0 };
-			for (size_t k = 0; k < _numCol; ++k)
-				sum += _elements[i][k] * matrix[k][j];
-			resultMat[i][j] = sum;
-		}
+		for (size_t i = 0; i < _numRow; ++i)
+			for (size_t j = 0; j < _numCol; ++j)
+				resultMat[i][j] = _elements[i][j] * matrix[i][j];
 
 		return resultMat;
 	}
@@ -210,6 +274,19 @@ namespace Math
 		for (size_t i = 0; i < _numRow; ++i)
 		for (size_t j = 0; j < _numCol; ++j)
 			_elements[i][j] -= matrix[i][j];
+
+		return *this;
+	}
+
+	template <typename Type>
+	template <typename E>
+	Matrix<Type>& Matrix<Type>::operator*=(const Matrix<E>& matrix)
+	{
+		assert(_numCol == matrix._numCol && _numRow == matrix._numRow);
+
+		for (size_t i = 0; i < _numRow; ++i)
+		for (size_t j = 0; j < _numCol; ++j)
+			_elements[i][j] *= matrix[i][j];
 
 		return *this;
 	}

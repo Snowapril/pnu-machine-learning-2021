@@ -54,7 +54,15 @@ namespace Math
 		//! 
 		Matrix(const std::initializer_list<std::initializer_list<Type>>& list);
 		//! Initialize _attributes with given vector values.
-		Matrix(const std::vector<RowType>& values);
+		Matrix(const ContainerType& values);
+		//! Default Move constructor
+		Matrix(Matrix<Type>&& rmat);
+		//! Default copy constructor
+		Matrix(const Matrix<Type>& rmat);
+		//! Default Move assignment operator
+		Matrix<Type>& operator=(Matrix<Type>&& rmat);
+		//! Default copy assignment operator
+		Matrix<Type>& operator=(const Matrix<Type>& rmat);
 		//! Default destructor
 		~Matrix() = default;
 		//! 
@@ -63,6 +71,8 @@ namespace Math
 		//! \param N - number of rows (height)
 		//! 
 		void Resize(size_t M, size_t N, const Type& initialValue = 0);
+		//! Returns the transposed matrix of this matrix
+		Matrix<Type> Transposed() const;
 		//!
 		//! \brief constructs a matrix with given initializer list \p list
 		//! 
@@ -81,19 +91,23 @@ namespace Math
 		//! 
 		void Set(const std::initializer_list<std::initializer_list<Type>>& list);
 		//! Initialize _attributes with given vector values.
-		void Set(const std::vector<RowType>& values);
+		void Set(const ContainerType& values);
 		//! Set elements of the i-th row
 		void SetRow(const RowType& data, size_t i);
 		//! Set element of the i-th column
 		void SetColumn(const RowType& data, size_t i);
+		//! Returns matrix multiplication result with given matrix.
+		//! this matrix's _numCol and given matrix's _numRow must matched
+		template <typename E>
+		Matrix<Type> Mul(const Matrix<E>& matrix) const;
 		//! Returns new matrix + input scalar
-		const Matrix<Type> operator+(const Type& scalar);
+		const Matrix<Type> operator+(const Type& scalar) const;
 		//! Returns new matrix - input scalar
-		const Matrix<Type> operator-(const Type& scalar);
+		const Matrix<Type> operator-(const Type& scalar) const;
 		//! Returns new matrix * input scalar
-		const Matrix<Type> operator*(const Type& scalar);
+		const Matrix<Type> operator*(const Type& scalar) const;
 		//! Returns new matrix / input scalar
-		const Matrix<Type> operator/(const Type& scalar);
+		const Matrix<Type> operator/(const Type& scalar) const;
 		//! Returns this matrix + input scalar
 		Matrix<Type>& operator+=(const Type& scalar);
 		//! Returns this matrix - input scalar
@@ -104,13 +118,13 @@ namespace Math
 		Matrix<Type>& operator/=(const Type& scalar);
 		//! Returns new matrix + input scalar
 		template <typename E>
-		const Matrix<Type> operator+(const Matrix<E>& matrix);
+		const Matrix<Type> operator+(const Matrix<E>& matrix) const;
 		//! Returns new matrix - input matrix
 		template <typename E>
-		const Matrix<Type> operator-(const Matrix<E>& matrix);
+		const Matrix<Type> operator-(const Matrix<E>& matrix) const;
 		//! Returns new matrix * input matrix
 		template <typename E>
-		const Matrix<Type> operator*(const Matrix<E>& matrix);
+		const Matrix<Type> operator*(const Matrix<E>& matrix) const;
 		//! Returns this matrix + input matrix
 		template <typename E>
 		Matrix<Type>& operator+=(const Matrix<E>& matrix);
@@ -118,6 +132,7 @@ namespace Math
 		template <typename E>
 		Matrix<Type>& operator-=(const Matrix<E>& matrix);
 		//! Returns this matrix * input matrix
+		//! Note that this multiplication is piecewise operation
 		template <typename E>
 		Matrix<Type>& operator*=(const Matrix<E>& matrix);
 		//! Returns reference of i-th element
