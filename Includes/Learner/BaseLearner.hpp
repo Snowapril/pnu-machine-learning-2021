@@ -21,11 +21,11 @@ namespace Learner
 		//! Default destructor
 		virtual ~BaseLearner() = default;
 		//! Train the learner with one data
-		void Train(const Math::FMatrix& data);
+		void Train(const Math::FMatrix& data, bool verbose = true);
 		//! Predict the target with one data.
 		void Predict(const Math::FMatrix& data, Math::FMatrix* prediction);
 		//! Train the learner with the given batch dataset
-		void TrainOnBatch(const std::shared_ptr<Generator::BaseGenerator>& batchData);
+		void TrainOnBatch(const std::shared_ptr<Generator::BaseGenerator>& batchData, bool verbose = true);
 		//! Predict the given batch dataset. In this case, there is no modification in parameters of the learner.
 		void PredictOnBatch(const std::shared_ptr<Generator::BaseGenerator>& batchData,
 							std::vector<Math::FMatrix>* predictions);

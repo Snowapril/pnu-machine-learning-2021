@@ -8,9 +8,10 @@
 
 namespace Learner
 {
-	void BaseLearner::Train(const Math::FMatrix& data)
+	void BaseLearner::Train(const Math::FMatrix& data, bool verbose)
 	{
 		(void)data;
+		(void)verbose;
 	}
 
 	void BaseLearner::Predict(const Math::FMatrix& data, Math::FMatrix* prediction)
@@ -19,9 +20,10 @@ namespace Learner
 		(void)prediction;
 	}
 
-	void BaseLearner::TrainOnBatch(const std::shared_ptr<Generator::BaseGenerator>& batchData)
+	void BaseLearner::TrainOnBatch(const std::shared_ptr<Generator::BaseGenerator>& batchData, bool verbose)
 	{
 		(void)batchData;
+		(void)verbose;
 	}
 
 	void BaseLearner::PredictOnBatch(const std::shared_ptr<Generator::BaseGenerator>& batchData,
