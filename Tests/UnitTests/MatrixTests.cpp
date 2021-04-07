@@ -25,7 +25,7 @@ TEST_CASE("Matrix multiplication Test")
         {1.0f}
     };
 
-    auto resultMat = mat1 * mat2;
+    auto resultMat = mat1.Mul(mat2);
 
     CHECK_EQUAL_EPSILON(resultMat(0, 0), 10.0f, 1e-9f);
 }
@@ -58,6 +58,21 @@ TEST_CASE("Matrix substraction Test")
     auto resultMat = mat1 - mat2;
 
     CHECK_EQUAL_EPSILON(resultMat(0, 2), 0.0f, 1e-9f);
+}
+
+TEST_CASE("Matrix piecewise multiplication Test")
+{
+    Math::Matrix<float> mat1{
+        {1.0f, 2.0f, 3.0f, 4.0f}
+    };
+
+    Math::Matrix<float> mat2{
+        {1.0f, 2.0f, 3.0f, 4.0f}
+    };
+
+    auto resultMat = mat1 * mat2;
+
+    CHECK_EQUAL_EPSILON(resultMat(0, 2), 9.0f, 1e-9f);
 }
 
 TEST_CASE("Matrix scalar multiplication Test")
