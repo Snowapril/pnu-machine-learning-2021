@@ -9,6 +9,7 @@
 
 #include <type_traits>
 #include <functional>
+#include <cmath>
 
 namespace Learner
 {
