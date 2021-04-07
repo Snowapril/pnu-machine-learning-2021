@@ -7,23 +7,26 @@
 #include <iostream>
 #include <Generator/BaseGenerator.hpp>
 #include <Learner/Regression.hpp>
-#include <Learner/Initializer.hpp>
+#include <Layer/Initializer.hpp>
+#include <Layer/Dense.hpp>
+#include <Layer/Activation.hpp>
 #include <memory>
 
 int main(int argc, char* argv[])
 {
 	(void)argc; (void)argv;
+	const bool verbose = true;
 
 	const std::initializer_list<size_t> targetIndices = { 3 };
 	auto trainSet = std::make_shared<Generator::BaseGenerator>(DATASETS_DIR "/3d100a.csv", targetIndices);
 	auto testSet  = std::make_shared<Generator::BaseGenerator>(DATASETS_DIR "/3d100b.csv", targetIndices);
 
 	Learner::Regression regressionLearner;
-	regressionLearner.AddDenseLayer<Learner::Activation::Sigmoid<float>>(4, 1, [](Math::Matrix<float>& weights) {
-		Learner::Initializer::XavierUniform(weights, 0.0f);
-	});
+	regressionLearner.AddUnitLayer(std::make_shared<Layer::Dense<float>>(4, 1, Layer::Initializer::XavierUniform<float>));
+	regressionLearner.AddUnitLayer(std::make_shared<Layer::Sigmoid<float>>());
+	regressionLearner.Summarize();
 
-	regressionLearner.TrainOnBatch(trainSet);
+	regressionLearner.TrainOnBatch(trainSet, verbose);
 
 	std::vector<Math::FMatrix> prediction;
 	regressionLearner.PredictOnBatch(testSet, &prediction);
