@@ -38,7 +38,6 @@ namespace Generator
 		ContainerType _labels;
 		size_t _inputLength{ 0 }, _labelLength{ 0 };
 		size_t _numData{ 0 };
-		size_t _index{ 0 };
 	};
 };
 
