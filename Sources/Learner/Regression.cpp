@@ -19,6 +19,19 @@ namespace Learner
 		_layers.push_back(layer);
 	}
 
+	void Regression::OnTrain(const Math::FMatrix& input, const Math::FMatrix& label)
+	{
+		// TODO(snowapril) : 
+		(void)input;
+		(void)label;
+	}
+
+	Math::FMatrix Regression::OnPredict(const Math::FMatrix& input)
+	{
+		// TODO(snowapril) : 
+		return input;
+	}
+
 	void Regression::Summarize() const
 	{
 		std::cout << "=====================Model Summary=====================" << std::endl;

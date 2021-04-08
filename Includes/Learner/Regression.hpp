@@ -30,8 +30,13 @@ namespace Learner
 		//! Set learning rate handler function
 		void SetLearningRateHandler(LearningRate::LearningRateFunc<float> handler);
 		//! Summarize the model
-		void Summarize() const;
+		void Summarize() const override;
 	protected:
+		//! Train on given input matrix and label matrix
+		void OnTrain(const Math::FMatrix& input, const Math::FMatrix& label) override;
+		//! Make prediction on given input matrix and retunrs it.
+		Math::FMatrix OnPredict(const Math::FMatrix& input) override;
+
 		std::vector<std::shared_ptr<Layer::BaseLayer<float>>> _layers;
 		LearningRate::LearningRateFunc<float> _lrHandler { LearningRate::Constant<float> };
 	protected:

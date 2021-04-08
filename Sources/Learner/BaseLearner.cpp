@@ -8,9 +8,14 @@
 
 namespace Learner
 {
-	void BaseLearner::Train(const Math::FMatrix& data, bool verbose)
+	void BaseLearner::TrainOnBatch(const Generator::BatchGenerator& batchData, size_t batchSize, bool verbose)
 	{
-		(void)data;
+		size_t iteration = batchData.GetNumData();
+		for (size_t it = 0; it < iteration; it += batchSize)
+		{
+			const auto batch = batchData.GetBatchData(batchSize, it);
+			OnTrain(batch.first, batch.second);
+		}
 		(void)verbose;
 	}
 
@@ -20,14 +25,7 @@ namespace Learner
 		(void)prediction;
 	}
 
-	void BaseLearner::TrainOnBatch(const std::shared_ptr<Generator::BaseGenerator>& batchData, bool verbose)
-	{
-		(void)batchData;
-		(void)verbose;
-	}
-
-	void BaseLearner::PredictOnBatch(const std::shared_ptr<Generator::BaseGenerator>& batchData,
-									 std::vector<Math::FMatrix>* predictions)
+	void BaseLearner::PredictOnBatch(const Generator::BatchGenerator& batchData, std::vector<Math::FMatrix>* predictions)
 	{
 		(void)batchData;
 		(void)predictions;
