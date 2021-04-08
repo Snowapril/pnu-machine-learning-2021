@@ -4,8 +4,8 @@
 // personal capacity and are not conveying any rights to any intellectual
 // property of any third parties.
 
-#ifndef BASE_GENERATOR_HPP
-#define BASE_GENERATOR_HPP
+#ifndef BATCH_GENERATOR_HPP
+#define BATCH_GENERATOR_HPP
 
 #include <Math/Matrix.hpp>
 #include <string>
@@ -13,31 +13,33 @@
 
 namespace Generator
 {
-	class BaseGenerator
+	class BatchGenerator
 	{
 	public:
 		using DataType = Math::FMatrix;
 		using ContainerType = std::vector<DataType>;
 		using Iterator = typename ContainerType::iterator;
 		using ConstIterator = typename ContainerType::const_iterator;
-		using BatchType = std::pair<ConstIterator, ConstIterator>;
+		using BatchType = std::pair<DataType, DataType>;
 		//! Default constructor
-		BaseGenerator() = default;
+		BatchGenerator() = default;
 		//! Constructure with dataset informations
-		BaseGenerator(const std::string& filename, const std::initializer_list<size_t>& targetIndices, bool exceptHeader = true);
+		BatchGenerator(const std::string& filename, const std::initializer_list<size_t>& targetIndices, bool exceptHeader = true);
 		//! Default destructor
-		virtual ~BaseGenerator() = default;
+		~BatchGenerator() = default;
 		//! Load the generator from the dataset file.
 		bool LoadDataSet(const std::string& filename, const std::initializer_list<size_t>& targetIndices, bool exceptHeader = true);
-		//! Generate begin, end point pair of the input dataset vector in one epoch
-		virtual BatchType GetInputBatch(size_t epochIdx);
-		//! Generate begin, end point pair of the label dataset vector in one epoch
-		virtual BatchType GetLabelBatch(size_t epochIdx);
-	protected:
+		//! Returns input & label vector batch data according to given epochIndex.
+		BatchType GetBatchData(size_t batchSize, size_t idx) const;
+		//! Returns iteration count for given batch size.
+		size_t GetNumData() const;
+	private:
 		ContainerType _inputs;
 		ContainerType _labels;
-	private:
+		size_t _inputLength{ 0 }, _labelLength{ 0 };
+		size_t _numData{ 0 };
+		size_t _index{ 0 };
 	};
 };
 
-#endif //! end of BaseGenerator.hpp
+#endif //! end of BatchGenerator.hpp

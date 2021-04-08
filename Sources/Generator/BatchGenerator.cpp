@@ -4,7 +4,7 @@
 // personal capacity and are not conveying any rights to any intellectual
 // property of any third parties.
 
-#include <Generator/BaseGenerator.hpp>
+#include <Generator/BatchGenerator.hpp>
 #include <Utils/DataLoader.hpp>
 #include <sstream>
 #include <iterator>
@@ -13,13 +13,13 @@
 
 namespace Generator
 {
-	BaseGenerator::BaseGenerator(const std::string& filename, const std::initializer_list<size_t>& targetIndices, bool exceptHeader)
+	BatchGenerator::BatchGenerator(const std::string& filename, const std::initializer_list<size_t>& targetIndices, bool exceptHeader)
 	{
 		if (!LoadDataSet(filename, targetIndices, exceptHeader))
 			std::exit(1);
 	}
 
-	bool BaseGenerator::LoadDataSet(const std::string& filename, const std::initializer_list<size_t>& targetIndices, bool exceptHeader)
+	bool BatchGenerator::LoadDataSet(const std::string& filename, const std::initializer_list<size_t>& targetIndices, bool exceptHeader)
 	{
 		std::vector<char> contents;
 		if (!Utils::DataLoader::LoadFile(filename, &contents))
@@ -60,18 +60,31 @@ namespace Generator
 			_labels.emplace_back(std::move(label));
 		}
 
+		if (_inputs.empty() == false)
+			_inputLength = _inputs.front().Size();
+		if (_labels.empty() == false)
+			_labelLength = _labels.front().Size();
+		_numData = std::min(_inputs.size(), _labels.size());
+
 		return true;
 	}
 
-	BaseGenerator::BatchType BaseGenerator::GetInputBatch(size_t epochIdx)
+	BatchGenerator::BatchType BatchGenerator::GetBatchData(size_t batchSize, size_t idx) const
 	{
-		(void)epochIdx;
-		return std::make_pair(_inputs.begin(), _inputs.end());
+		DataType input(_inputLength, batchSize);
+		DataType label(_labelLength, batchSize);
+
+		for (size_t i = 0; i < batchSize; ++i)
+		{
+			input.SetRow(_inputs[idx + i][0], i);
+			label.SetRow(_labels[idx + i][0], i);
+		}
+
+		return std::make_pair(input, label);
 	}
 
-	BaseGenerator::BatchType BaseGenerator::GetLabelBatch(size_t epochIdx)
+	size_t BatchGenerator::GetNumData() const
 	{
-		(void)epochIdx;
-		return std::make_pair(_labels.begin(), _labels.end());
+		return _numData;
 	}
 };
