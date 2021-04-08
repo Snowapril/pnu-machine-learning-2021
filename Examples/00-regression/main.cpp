@@ -5,7 +5,7 @@
 // property of any third parties.
 
 #include <iostream>
-#include <Generator/BaseGenerator.hpp>
+#include <Generator/BatchGenerator.hpp>
 #include <Learner/Regression.hpp>
 #include <Layer/Initializer.hpp>
 #include <Layer/Dense.hpp>
@@ -18,15 +18,15 @@ int main(int argc, char* argv[])
 	const bool verbose = true;
 
 	const std::initializer_list<size_t> targetIndices = { 3 };
-	auto trainSet = std::make_shared<Generator::BaseGenerator>(DATASETS_DIR "/3d100a.csv", targetIndices);
-	auto testSet  = std::make_shared<Generator::BaseGenerator>(DATASETS_DIR "/3d100b.csv", targetIndices);
+	Generator::BatchGenerator trainSet(DATASETS_DIR "/3d100a.csv", targetIndices);
+	Generator::BatchGenerator  testSet(DATASETS_DIR "/3d100b.csv", targetIndices);
 
 	Learner::Regression regressionLearner;
 	regressionLearner.AddUnitLayer(std::make_shared<Layer::Dense<float>>(4, 1, Layer::Initializer::XavierUniform<float>));
 	regressionLearner.AddUnitLayer(std::make_shared<Layer::Sigmoid<float>>());
 	regressionLearner.Summarize();
 
-	regressionLearner.TrainOnBatch(trainSet, verbose);
+	regressionLearner.TrainOnBatch(trainSet, 10, verbose);
 
 	std::vector<Math::FMatrix> prediction;
 	regressionLearner.PredictOnBatch(testSet, &prediction);
