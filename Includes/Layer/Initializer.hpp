@@ -50,4 +50,4 @@ namespace Layer
 	};
 };
 
-#endif //! end of Activation.hpp
+#endif //! end of Initializer.hpp
