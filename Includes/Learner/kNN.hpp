@@ -19,6 +19,8 @@ namespace Learner
 		kNN() = default;
 		//! Default destructor
 		~kNN() = default;
+		//! Summarize the model
+		void Summarize() const override;
 	protected:
 	private:
 	};
