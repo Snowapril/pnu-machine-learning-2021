@@ -1,0 +1,29 @@
+name: windows
+
+on:  
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-ubuntu:
+    strategy:
+      matrix:
+        include:
+          - name: "Windows Latest"
+            os: windows-latest
+
+    runs-on: ${{matrix.os}}
+    name: ${{matrix.name}}
+
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        submodules: true
+    - name: Run Python Test
+      run: |
+        pip3 install -r requirements.txt
+        pycodestyle pnuml
+        pytest --verbose --capture=no pnuml
+        pip install .

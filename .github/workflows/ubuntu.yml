@@ -1,4 +1,4 @@
-name: main workflow
+name: ubuntu
 
 on:  
   push:
@@ -13,8 +13,6 @@ jobs:
         include:
           - name: "Ubuntu Latest"
             os: ubuntu-latest
-          - name: "Windows Latest"
-            os: windows-latest
 
     runs-on: ${{matrix.os}}
     name: ${{matrix.name}}
