@@ -1,4 +1,4 @@
-from somepackage import add
+from pnuml import add
 
 
 def test_my_add():

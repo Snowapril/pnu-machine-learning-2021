@@ -1,4 +1,4 @@
-from somepackage import shout
+from pnuml import shout
 
 
 def test_shout_and_repeat():
