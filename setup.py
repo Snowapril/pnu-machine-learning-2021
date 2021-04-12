@@ -26,7 +26,6 @@ setup(
     url='https://github.com/snowapril/pnu-machine-learning-2021',
     license='MIT',
     packages=['pnuml'],
-    install_requires=[]
     include_package_data=True,
     classifiers=['Programming Language :: Python :: 3.8'],
     )
