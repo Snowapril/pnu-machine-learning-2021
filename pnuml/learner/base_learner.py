@@ -6,7 +6,7 @@ class BaseLearner(metaclass=ABCMeta):
     def train_on_batch(self, batch_loader):
         """
         parameter tuning learning model with given training
-        data set 
+        data set
         """
         pass
 
@@ -14,7 +14,7 @@ class BaseLearner(metaclass=ABCMeta):
     def predict_on_batch(self, batch_loader):
         """
         make prediction with tuned parameter to given
-        test dataset. 
+        test dataset.
         """
         pass
 

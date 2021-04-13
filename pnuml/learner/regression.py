@@ -8,7 +8,7 @@ class Regression(BaseLearner):
         """
         configure regression model
         param weight : weight **w** of the model
-        param activation : can be ReLU or Sigmoid or TanH 
+        param activation : can be ReLU or Sigmoid or TanH
         """
         super().__init__()
         self.weight = weight
@@ -30,7 +30,8 @@ class Regression(BaseLearner):
                 x = np.pad(x, ((0, 0), (1, 0)), 'constant', constant_values=1)
                 g = np.matmul(self.weight, x.T)
                 h_w = self.activation.forward(g)
-                loss.append(np.sum(y * np.log(h_w) + (1. - y) * np.log(1. - h_w)))
+                loss.append(np.sum(y * np.log(h_w) +
+                                   (1. - y) * np.log(1. - h_w)))
                 self.weight = self.weight + lr * (y - h_w) * x
                 lr -= lr * lr_decay
         return loss
