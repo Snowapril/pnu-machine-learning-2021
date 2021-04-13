@@ -1,6 +1,6 @@
 from pnuml.data import DataLoader
 from pnuml.learner import KNN, Regression
-from pnuml.learner.utils import xavier_uniform_weight, minkowski_distance
+from pnuml.learner.utils import zero_weight, minkowski_distance
 from pnuml.learner.activation import Sigmoid
 from pnuml.evaluator import summary_difference
 import numpy as np
@@ -21,7 +21,7 @@ def build_regression(train_loader, test_loader):
     Build regression learning scheme with given trainset
     and test regression model with testset
     """
-    weights = xavier_uniform_weight([1, 4])
+    weights = zero_weight([1, 4])
     model = Regression(weights, Sigmoid)
 
     model.train_on_batch(train_loader, epoch=100, lr=1e-3, lr_decay=1e-9)
